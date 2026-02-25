@@ -1,13 +1,15 @@
+import type { Dispatch } from 'react';
 import { Select } from '../shared/Select';
 import type { FilterState } from '../../types';
 import { DECLINE_CODES } from '../../data/constants';
 import type { DeclineCode } from '../../types';
+import type { FilterAction } from '../../hooks/useTransactionFilters';
 
 const ALL_DECLINE_CODES = Object.keys(DECLINE_CODES) as DeclineCode[];
 
 interface FilterPanelProps {
   state: FilterState;
-  dispatch: React.Dispatch<{ type: 'SET'; key: keyof FilterState; value: FilterState[keyof FilterState] } | { type: 'SET_DECLINE_CODE'; payload: FilterState['declineCode'] } | { type: 'RESET' }>;
+  dispatch: Dispatch<FilterAction>;
 }
 
 export function FilterPanel({ state, dispatch }: FilterPanelProps) {
@@ -27,7 +29,6 @@ export function FilterPanel({ state, dispatch }: FilterPanelProps) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
-        {/* Date range */}
         <div>
           <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">From</label>
           <input
@@ -82,8 +83,8 @@ export function FilterPanel({ state, dispatch }: FilterPanelProps) {
           onChange={v => set('declineCategory', v as FilterState['declineCategory'])}
           options={[
             { value: 'all', label: 'All types' },
-            { value: 'soft', label: 'Soft (Retriable)' },
-            { value: 'hard', label: 'Hard (Permanent)' },
+            { value: 'soft', label: 'Soft — Retriable' },
+            { value: 'hard', label: 'Hard — Permanent' },
           ]}
         />
         <Select

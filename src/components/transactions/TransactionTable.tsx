@@ -1,18 +1,19 @@
+import type { Dispatch } from 'react';
 import type { Transaction, FilterState } from '../../types';
 import { Badge, getStatusVariant } from '../shared/Badge';
 import { Pagination } from '../shared/Pagination';
 import { EmptyState } from '../shared/EmptyState';
 import { PAGE_SIZE, PAYMENT_METHOD_LABELS, COUNTRY_LABELS, DECLINE_CODES } from '../../data/constants';
 import { formatCurrency, formatDate, formatTime } from '../../utils/formatters';
+import type { FilterAction } from '../../hooks/useTransactionFilters';
 
 interface TableProps {
   transactions: Transaction[];
-  allFiltered: Transaction[];
   currentPage: number;
   totalPages: number;
   totalCount: number;
   state: FilterState;
-  dispatch: React.Dispatch<{ type: 'SET'; key: keyof FilterState; value: FilterState[keyof FilterState] } | { type: 'SET_DECLINE_CODE'; payload: FilterState['declineCode'] } | { type: 'RESET' }>;
+  dispatch: Dispatch<FilterAction>;
   onSelectRow: (t: Transaction) => void;
 }
 
@@ -39,7 +40,12 @@ export function TransactionTable({
         <EmptyState
           title="No transactions match your filters"
           description="Try adjusting the filters above"
-          icon={<svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>}
+          icon={
+            <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1}
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          }
         />
       </div>
     );

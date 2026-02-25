@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { DeclineCategory, TransactionStatus } from '../../types';
 
 export type BadgeVariant = 'approved' | 'soft' | 'hard' | 'neutral';
@@ -11,7 +12,7 @@ const STYLES: Record<BadgeVariant, string> = {
 
 interface BadgeProps {
   variant: BadgeVariant;
-  children: React.ReactNode;
+  children: ReactNode;
   size?: 'sm' | 'md';
 }
 

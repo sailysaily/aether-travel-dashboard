@@ -19,16 +19,20 @@ const DEFAULT_STATE: FilterState = {
   page: 1,
 };
 
-type Action =
+export type FilterAction =
   | { type: 'SET'; key: keyof FilterState; value: FilterState[keyof FilterState] }
   | { type: 'SET_DECLINE_CODE'; payload: FilterState['declineCode'] }
   | { type: 'RESET' };
 
-function reducer(state: FilterState, action: Action): FilterState {
+function reducer(state: FilterState, action: FilterAction): FilterState {
   switch (action.type) {
     case 'SET': {
       const isPageKey = action.key === 'page';
-      return { ...state, [action.key]: action.value, page: isPageKey ? (action.value as number) : 1 };
+      return {
+        ...state,
+        [action.key]: action.value,
+        page: isPageKey ? (action.value as number) : 1,
+      } as FilterState;
     }
     case 'SET_DECLINE_CODE':
       return { ...state, declineCode: action.payload, status: 'declined', page: 1 };
@@ -83,9 +87,11 @@ export function useTransactionFilters(initialDeclineCode?: string) {
     });
 
     return result;
-  }, [debouncedSearch, state.dateFrom, state.dateTo, state.status, state.paymentMethod,
-      state.declineCode, state.declineCategory, state.country, state.amountMin,
-      state.amountMax, state.sortBy, state.sortDir]);
+  }, [
+    debouncedSearch, state.dateFrom, state.dateTo, state.status, state.paymentMethod,
+    state.declineCode, state.declineCategory, state.country, state.amountMin,
+    state.amountMax, state.sortBy, state.sortDir,
+  ]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(state.page, totalPages);

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Transaction } from '../../types';
 import { Badge, getStatusVariant } from '../shared/Badge';
 import { DECLINE_CODES, PAYMENT_METHOD_LABELS, COUNTRY_LABELS } from '../../data/constants';
@@ -17,12 +18,7 @@ export function TransactionDrawer({ transaction: t, onClose }: DrawerProps) {
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/30 z-40"
-        onClick={onClose}
-      />
-      {/* Drawer */}
+      <div className="fixed inset-0 bg-black/30 z-40" onClick={onClose} />
       <div className="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl z-50 flex flex-col overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 shrink-0">
@@ -41,28 +37,28 @@ export function TransactionDrawer({ transaction: t, onClose }: DrawerProps) {
         </div>
 
         <div className="flex-1 p-6 space-y-6">
-          {/* Decline category banner */}
+          {/* Soft/Hard banner */}
           {isSoft && (
             <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-amber-600 text-base">⚡</span>
+                <span className="text-amber-600">⚡</span>
                 <p className="text-sm font-semibold text-amber-800">Soft Decline — Revenue Recovery Possible</p>
               </div>
               <p className="text-xs text-amber-700">
-                This is a <strong>temporary bank hold</strong>, not a permanent rejection. The customer's payment method is valid
-                and this transaction can be recovered.
+                This is a <strong>temporary bank hold</strong>. The customer’s payment method is valid and this
+                transaction can be recovered with a retry or payment link.
               </p>
             </div>
           )}
           {isHard && (
             <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl">
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-rose-600 text-base">🚫</span>
+                <span className="text-rose-600">🚫</span>
                 <p className="text-sm font-semibold text-rose-800">Hard Decline — Customer Action Required</p>
               </div>
               <p className="text-xs text-rose-700">
-                This is a <strong>permanent failure</strong>. Retrying will not succeed. The customer must provide a
-                new payment method or resolve the issue with their bank.
+                This is a <strong>permanent failure</strong>. Retrying will not succeed. The customer must
+                provide a new payment method or resolve the issue with their bank.
               </p>
             </div>
           )}
@@ -84,7 +80,9 @@ export function TransactionDrawer({ transaction: t, onClose }: DrawerProps) {
               <Row label="Date">{formatDate(t.timestamp)} at {formatTime(t.timestamp)}</Row>
               {t.isHighValue && t.status === 'declined' && (
                 <Row label="Priority">
-                  <span className="text-xs font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-full px-2 py-0.5">High-value failure</span>
+                  <span className="text-xs font-medium text-rose-600 bg-rose-50 border border-rose-200 rounded-full px-2 py-0.5">
+                    High-value failure
+                  </span>
                 </Row>
               )}
             </dl>
@@ -95,7 +93,7 @@ export function TransactionDrawer({ transaction: t, onClose }: DrawerProps) {
             <div>
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Decline Information</h3>
               <dl className="space-y-3">
-                <Row label="Decline Code"><span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded">{t.declineCode}</span></Row>
+                <Row label="Code"><span className="font-mono text-xs bg-gray-100 px-2 py-0.5 rounded">{t.declineCode}</span></Row>
                 <Row label="Reason">{codeInfo.label}</Row>
               </dl>
               <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -123,7 +121,7 @@ export function TransactionDrawer({ transaction: t, onClose }: DrawerProps) {
   );
 }
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
+function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="flex items-start justify-between gap-4">
       <dt className="text-xs text-gray-500 shrink-0 w-28">{label}</dt>
